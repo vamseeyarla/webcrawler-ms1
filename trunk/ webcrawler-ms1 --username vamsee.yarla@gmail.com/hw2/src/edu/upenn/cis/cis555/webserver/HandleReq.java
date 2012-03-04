@@ -1074,12 +1074,19 @@ public class HandleReq {
                 int size=4096;
                 
                 byte Bytes[]=new byte[size];
+                int count=0;
+                while ((count = read.read(Bytes, 0, size)) != -1)
+                {
+                        bw.write(Bytes, 0, count);
+                }
+             /*   
                 while(read.read(Bytes, 0, size)==size)
                 {
-                	 bw.write(Bytes);
+                	 bw.write(Bytes,0,);
                 }
-            
                 bw.write(Bytes);
+            */
+                
                
                 read.close();
              }
@@ -1572,17 +1579,17 @@ public class HandleReq {
 			else
 			{
 			    
-		//		System.out.println("NTERED SERVLET");
+				System.out.println("ENTERED SERVLET");
 			try{
 				ServletsSession fs=null;
 				
 			    
 			    Cookie cookie=null;
-			    
+			    System.out.println("BEFORE REQ");
 			    request=populateRequest(met,url,arguments,encoding,fs,servlet,pathInfo,servletPath);
-			//	System.out.println("REQ DONE");
+				System.out.println("REQ DONE");
 				response=populateResponse(cookie,request);
-			//	System.out.println("RES DONE");
+				System.out.println("RES DONE");
 				
 				
 			//	ServletsRequest request = new ServletsRequest(fs);
@@ -1604,9 +1611,9 @@ public class HandleReq {
 				
 		try{
 		//	System.out.println(servlet.getServletName());
-		//	     System.out.println("BEFORE PROCESS");
+			     System.out.println("BEFORE PROCESS");
 				 servlet.service(request, response);
-		//		 System.out.println("AFTER PROCESS");
+				 System.out.println("AFTER PROCESS");
 				 
 				if(request.sessionStatus && request.hasSession())
 				{
@@ -1664,7 +1671,7 @@ public class HandleReq {
 			
 			
 		//	System.out.println(e.toString());
-		//	e.printStackTrace();
+			e.printStackTrace();
 			bw.write(version.concat("500 Internal Server Error\n").getBytes());
 			for(String header: response.header.keySet())
 			{
@@ -1694,7 +1701,7 @@ public class HandleReq {
 				catch(Exception e)
 				{
 					logger.error(e.toString());
-			//		e.printStackTrace();
+					e.printStackTrace();
 		//			System.out.println(e.toString()+" ERROR IN SERVLET EXEC");
 				}
 				 return false;
@@ -1844,6 +1851,7 @@ public class HandleReq {
 	    */       
     public ServletsRequest populateRequest(String method,String url, String parameters,String encoding,ServletsSession fs,Servlet servlet,String pathInfo, String servletPath)
     {
+    	
     	ServletsRequest req=new ServletsRequest(fs);
     	
     //	System.out.println("THIS IS SERVLET:  "+servlet);
@@ -2002,7 +2010,7 @@ public class HandleReq {
     				req.setCharacterEncoding(encoding);
     			} catch (UnsupportedEncodingException e) {
     				logger.error(e.toString());
-    		//		e.printStackTrace();
+    				e.printStackTrace();
     		//		System.out.println(e.toString() +" Error in putting encoding");
     		//		e.printStackTrace();
     			}
@@ -2025,7 +2033,7 @@ public class HandleReq {
     			catch(Exception e)
     			{
     				logger.error(e.toString());
-    		//		e.printStackTrace();
+    				e.printStackTrace();
     				req.ContentLength=200;
     			}
     		}
@@ -2153,7 +2161,8 @@ public class HandleReq {
     		}
     		else
     		{
-    			req.RealPath="Relative to Context Path is:  "+servlet.toString().split("@")[0].replaceAll(".", "\\");
+    			System.out.println(servlet.toString().split("@")[0]);
+    			req.RealPath="Relative to Context Path is:  "+servlet.toString().split("@")[0].replaceAll(".", "/");
     		}
     		}
     		

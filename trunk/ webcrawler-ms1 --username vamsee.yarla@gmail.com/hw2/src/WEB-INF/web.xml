@@ -9,9 +9,9 @@
 
     <!-- General description of your web application -->
 
-    <display-name>Test servlets</display-name>
+    <display-name>Crawler Servlets</display-name>
     <description>
-    Some servlets you can use to test your application server
+    Some servlets for the web crawler
     </description>
 
 
@@ -77,113 +77,9 @@
       <load-on-startup/>
     </servlet>
 
-    <servlet>
-      <servlet-name>init</servlet-name>
-      <description>
-        This servlet checks for the context init parameter "webmaster" from
-        above, and the servlet init parameter "TestParam" from below.
-      </description>
-      <servlet-class>edu.upenn.cis.cis555.Sample.Servlets.src.InitParamServlet</servlet-class>
-      <!-- Load this servlet at server startup time -->
-      <init-param>
-        <param-name>TestParam</param-name>
-        <param-value>1776</param-value>
-      </init-param>
-     <load-on-startup/>
-    </servlet>
-
-    <servlet>
-      <servlet-name>session1</servlet-name>
-      <servlet-class>edu.upenn.cis.cis555.Sample.Servlets.src.SessionServlet1</servlet-class>
-      <!-- Load this servlet at server startup time -->
-      <load-on-startup/>
-    </servlet>
-
-    <servlet>
-      <servlet-name>session2</servlet-name>
-      <servlet-class>edu.upenn.cis.cis555.Sample.Servlets.src.SessionServlet2</servlet-class>
-      <!-- Load this servlet at server startup time -->
-      <load-on-startup/>
-    </servlet>
-
-    <servlet>
-      <servlet-name>session3</servlet-name>
-      <servlet-class>edu.upenn.cis.cis555.Sample.Servlets.src.SessionServlet3</servlet-class>
-      <!-- Load this servlet at server startup time -->
-      <load-on-startup/>
-    </servlet>
-
-    <servlet>
-      <servlet-name>cookie1</servlet-name>
-      <servlet-class>edu.upenn.cis.cis555.Sample.Servlets.src.CookieServlet1</servlet-class>
-      <!-- Load this servlet at server startup time -->
-      <load-on-startup/>
-    </servlet>
-
-    <servlet>
-      <servlet-name>cookie2</servlet-name>
-      <servlet-class>edu.upenn.cis.cis555.Sample.Servlets.src.CookieServlet2</servlet-class>
-      <!-- Load this servlet at server startup time -->
-      <load-on-startup/>
-    </servlet>
-
-    <servlet>
-      <servlet-name>cookie3</servlet-name>
-      <servlet-class>edu.upenn.cis.cis555.Sample.Servlets.src.CookieServlet3</servlet-class>
-      <!-- Load this servlet at server startup time -->
-      <load-on-startup/>
-    </servlet>
-
-    <servlet>
-      <servlet-name>busy</servlet-name>
-      <servlet-class>edu.upenn.cis.cis555.Sample.Servlets.src.BusyServlet</servlet-class>
-      <!-- Load this servlet at server startup time -->
-      <load-on-startup/>
-    </servlet>
-
     <servlet-mapping>
       <servlet-name>demo</servlet-name>
       <url-pattern>/demo</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-      <servlet-name>init</servlet-name>
-      <url-pattern>/init/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-      <servlet-name>session1</servlet-name>
-      <url-pattern>/session1</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-      <servlet-name>session2</servlet-name>
-      <url-pattern>/session2</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-      <servlet-name>session3</servlet-name>
-      <url-pattern>/session3</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-      <servlet-name>cookie1</servlet-name>
-      <url-pattern>/cookie1</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-      <servlet-name>cookie2</servlet-name>
-      <url-pattern>/cookie2</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-      <servlet-name>cookie3</servlet-name>
-      <url-pattern>/cookie3</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-      <servlet-name>busy</servlet-name>
-      <url-pattern>/busy</url-pattern>
     </servlet-mapping>
 
     <!-- Define the default session timeout for your application,

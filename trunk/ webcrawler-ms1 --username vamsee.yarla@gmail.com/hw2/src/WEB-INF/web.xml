@@ -72,7 +72,7 @@
       <description>
         This is a simple demonstration servlet.
       </description>
-      <servlet-class>edu.upenn.cis.cis555.Sample.Servlets.src.DemoServlet</servlet-class>
+      <servlet-class>edu.upenn.cis.cis555.XPathServlet</servlet-class>
       <!-- Load this servlet at server startup time -->
       <load-on-startup/>
     </servlet>

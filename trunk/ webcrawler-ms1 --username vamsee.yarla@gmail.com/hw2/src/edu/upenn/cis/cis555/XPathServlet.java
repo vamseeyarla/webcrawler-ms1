@@ -52,10 +52,23 @@ public class XPathServlet extends HttpServlet{
 		
 		System.out.println("URL:  "+request.getParameterValues("url"));
 		Document root=engine.createDOM(request.getParameterValues("url"));
+	
+	
 		
 		if(root!=null)
 		{
-			boolean[] status=engine.evaluate(root);
+			for(int i=1;i<=request.getParameterValues("xpath").length;i++)
+			{
+			if(!engine.xpathIsCorrect[i-1])
+			{
+				//TODO XPath not correct
+			}
+			else
+			{
+				//TODO CALL EVALAUTE FN
+				boolean[] status=engine.evaluate(root);
+			}
+			}
 			//TODO
 		}
 		else
@@ -64,18 +77,7 @@ public class XPathServlet extends HttpServlet{
 		//TODO
 		}
 		
-		for(int i=1;i<=request.getParameterValues("xpath").length;i++)
-		{
-		if(!engine.isValid(i))
-		{
-			//TODO XPath not correct
-		}
-		else
-		{
-			//TODO CALL EVALAUTE FN
-			
-		}
-		}
+		
 	}
 		
 }

@@ -216,12 +216,12 @@ public class HandleReq {
         			  char[] tempc=new char[length];
         			  br.read(tempc, 0, length);
         			  
-        		     temp=String.valueOf(tempc);
+        		      temp=String.valueOf(tempc);
         		
         		     /*
               	    * DECODING THE BODY
               	    */
-        		     temp=URLDecoder.decode(temp, encodingHeader);
+        		   //  temp=URLDecoder.decode(temp, encodingHeader);
         		
         		
         		
@@ -2098,7 +2098,7 @@ public class HandleReq {
     		//FINISHED
     		if(parameters!=null)
         	{
-    			parameters=URLDecoder.decode(parameters);
+    		//	parameters=URLDecoder.decode(parameters);
     			
         		String []params=parameters.split("\\?|&|=");
         		for(int i=0;i<params.length;i=i+2)
@@ -2106,7 +2106,7 @@ public class HandleReq {
         			
         			if(i==params.length-1)
         			{
-        				req.setParameter(params[i], "null");
+        				req.setParameter(URLDecoder.decode(params[i]), "null");
         			}
         			else
         			{
@@ -2115,11 +2115,11 @@ public class HandleReq {
         					String[] ind=params[i+1].split(",");
         					for(int k=0;k<ind.length;k++)
         					{
-        						req.setParameter(params[i], ind[k]);
+        						req.setParameter(URLDecoder.decode(params[i]), URLDecoder.decode(ind[k]));
         					}
         				}
         				else{
-        			req.setParameter(params[i], params[i+1]);
+        			req.setParameter(URLDecoder.decode(params[i]), URLDecoder.decode(params[i+1]));
         				}
         			}
         			

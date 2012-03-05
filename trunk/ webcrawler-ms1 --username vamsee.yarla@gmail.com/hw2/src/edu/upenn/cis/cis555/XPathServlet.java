@@ -47,9 +47,36 @@ public class XPathServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		
+		System.out.println("XPATH is:   "+request.getParameterValues("xpath"));
 		XPathEngine engine=new XPathEngine(request.getParameterValues("xpath"));
+		
+		System.out.println("URL:  "+request.getParameterValues("url"));
 		Document root=engine.createDOM(request.getParameterValues("url"));
-		boolean[] status=engine.evaluate(root);
+		
+		if(root!=null)
+		{
+			boolean[] status=engine.evaluate(root);
+			//TODO
+		}
+		else
+		{
+		//SOMETHING WRONG WITH SUPPLIED URL
+		//TODO
+		}
+		
+		for(int i=1;i<=request.getParameterValues("xpath").length;i++)
+		{
+		if(!engine.isValid(i))
+		{
+			//TODO XPath not correct
+		}
+		else
+		{
+			//TODO CALL EVALAUTE FN
+			
+		}
+		}
+	}
 		
 }
-	}
+	

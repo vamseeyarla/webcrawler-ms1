@@ -23,6 +23,8 @@ import org.w3c.dom.Document;
 public class XPathEngine {
 	public String [] xpaths;
 	boolean[] statuses;
+	public boolean[] xpathIsCorrect;
+	xpath[] xpathExp;
 	
 	public XPathEngine()
 	{
@@ -34,6 +36,33 @@ public class XPathEngine {
 	{
 		xpaths=s;
 		statuses=new boolean[xpaths.length];
+		xpath[] xpathExp=new xpath[xpaths.length];
+		xpathIsCorrect=new boolean[xpaths.length];
+		
+		for(int i=0;i<s.length;i++)
+		{
+			xpathIsCorrect[i]=isValid(i+1);
+			
+			
+			if(xpathIsCorrect[i])
+			{
+					xpathExp[i]=visualizeXPath(s[i]);
+					
+					xpath links=xpathExp[i];
+					
+					while(links.link!=null)
+					{
+						System.out.println(links.nodeName);
+						links=links.link;
+					}
+				//	links.link=temp;
+					System.out.println(links.nodeName);
+					
+			}	
+			
+			
+		}
+		
 	}
 	
 	
@@ -93,7 +122,7 @@ public class XPathEngine {
 	}
 	
 	
-	public boolean[] evaluate(Document d)
+	public boolean[] evaluate(Document root)
 	{
 		
 		
@@ -106,11 +135,121 @@ public class XPathEngine {
 	{
 		if(statuses==null || statuses.length>=i)
 		{
-			return statuses[i-1];
+			if(xpaths[i-1].charAt(0)!='/' || xpaths[i-1].indexOf("//")!=-1 || xpaths[i-1].indexOf("[[")!=-1 || xpaths[i-1].indexOf("::")!=-1|| xpaths[i-1].indexOf("==")!=-1 || xpaths[i-1].indexOf("@@")!=-1 || xpaths[i-1].indexOf("((")!=-1 || xpaths[i-1].indexOf("/[")!=-1)
+			{
+				System.out.println("XPath Verfication Failed!");
+				xpathIsCorrect[i-1]=false;
+				return false;
+			}
+	
+			else
+			{
+				xpathIsCorrect[i-1]=true;
+				return true;
+			}
+			
+			
 		}
 		else
 		{
 			return false;
 		}
+	}
+	
+	
+	class xpath
+	{
+		String nodeName;
+		String attributes;
+		xpath link;
+	}
+	
+	public xpath visualizeXPath(String path) 
+	{
+		
+		int pos=1;
+		int actualPointer=1;
+		xpath start=new xpath();
+		int match;
+		int objStatus=0;
+		
+		while((match=path.indexOf("/",pos))!=-1)
+		{
+			
+			int bracketLStatus=0,bracketRStatus=0;
+			String temps=path.substring(actualPointer, match);	
+			for(int z=0;z<temps.length();z++)
+			{
+				if(temps.charAt(z)=='[')
+				{
+					bracketLStatus++;
+				}
+				else if(temps.charAt(z)==']')
+				{
+					bracketRStatus++;
+				}
+			}
+			
+			if(bracketLStatus!=bracketRStatus)
+			{
+				pos=match+1;
+				continue;
+			}
+				
+			xpath temp=new xpath();
+			temp.nodeName=path.substring(actualPointer,match).trim();
+			temp.link=null;
+			pos=match+1;
+			actualPointer=match+1;
+			if(objStatus==0)
+			{
+				start=temp;
+				start.link=null;
+				objStatus++;
+			}
+			else
+			{
+				xpath links=start;
+				while(links.link!=null)
+				{
+					links=links.link;
+				}
+				links.link=temp;
+				objStatus++;
+			}
+			
+			
+		}
+		
+		
+		/*LAST '/' that doesn't execute in while loop
+		 * 
+		 */
+		
+		xpath temp=new xpath();
+		temp.nodeName=path.substring(actualPointer,path.length()).trim();
+		temp.link=null;
+		pos=match+1;
+		actualPointer=match+1;
+		if(objStatus==0)
+		{
+			start=temp;
+			start.link=null;
+			objStatus++;
+		}
+		else
+		{
+			xpath links=start;
+			while(links.link!=null)
+			{
+				links=links.link;
+			}
+			links.link=temp;
+			objStatus++;
+		}
+		
+		
+				
+		return start;
 	}
 }

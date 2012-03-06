@@ -31,7 +31,7 @@ public ByteArrayOutputStream fetchData()
 	{
 		outBytes=null;
 	}
-	else if(URL.indexOf("http://")==0)
+	else if(URL.indexOf("http://")==0 || URL.indexOf("HTTP://")==0)
 	{
 		String address;
 		String request;

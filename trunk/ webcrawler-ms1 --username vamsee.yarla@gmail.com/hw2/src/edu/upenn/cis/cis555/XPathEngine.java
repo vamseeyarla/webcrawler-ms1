@@ -3,19 +3,15 @@
  */
 package edu.upenn.cis.cis555;
 
-import java.io.BufferedInputStream;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.net.URL;
 import java.util.ArrayList;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.dom.DOMSource;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+
 
 
 
@@ -88,42 +84,22 @@ public class XPathEngine {
 	}
 	
 	
-	public Document createDOM(String [] s)
+	public Document createDOM(ByteArrayOutputStream outStream)
 	{
-		String url;
+	
 		DocumentBuilderFactory doc=null;
 		DocumentBuilder docBuilder=null;
 		Document docHead=null;
-		
-		if(s.length==0)
-		{
-			return null;
-		}
-		else
-		{
+	
 			try
 			{
-			url=s[0];
-		//			url="http://localhost:1234/web.xml";         
-			 doc=DocumentBuilderFactory.newInstance();
+			
+		 doc=DocumentBuilderFactory.newInstance();
 	         docBuilder = doc.newDocumentBuilder();
-       /*
-           BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
-            doc=DocumentBuilderFactory.newInstance();
-            docBuilder = doc.newDocumentBuilder();
-            
-             ByteArrayOutputStream out=new ByteArrayOutputStream();		           
-		                byte data[] = new byte[1024];
-		                int count;
-		                while ((count = in.read(data, 0, 1024)) != -1)
-		                {
-                                    out.write(data, 0, count);
-		                }
-		                  if (in != null)
-		                        in.close();
-		*/           
+    
+	ByteArrayInputStream stream=new ByteArrayInputStream(outStream.toByteArray());
 	
-        docHead = docBuilder.parse(new URL(url).openStream());
+        docHead = docBuilder.parse(stream);
 	
 			
 			
@@ -140,7 +116,7 @@ public class XPathEngine {
 			return docHead;
 			
 			
-		}
+		
 	}
 	
 	
@@ -367,7 +343,7 @@ public class XPathEngine {
 				
 			}
 			
-			else if(tempAtt.length()>8 && tempAtt.substring(0,8).equalsIgnoreCase("contains("))
+			else if(tempAtt.length()>8 && tempAtt.substring(0,9).equalsIgnoreCase("contains("))
 			{
 				//TODO ; For contains
 				/*

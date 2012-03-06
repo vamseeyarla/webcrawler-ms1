@@ -46,9 +46,45 @@ public class XPathEngine {
 		for(int i=0;i<s.length;i++)
 		{
 			xpathIsCorrect[i]=isValid(i+1);
-			
+			if(xpathIsCorrect[i])
+			{
+				xpaths[i]=removeWhiteSpaces(xpaths[i]);
+			}
 		}
 		
+	}
+	
+	public String removeWhiteSpaces(String xpath)
+	{
+		System.out.println("BEFORE XPATH:  "+xpath);
+		String temp="";
+		
+		for(int i=0;i<xpath.length();i++)
+		{
+			int counter=0;
+			if(xpath.charAt(i)==' ')
+			{
+				
+				for(int j=0;j<xpath.substring(0,i).length();j++)
+				{
+				if(xpath.substring(0,i).charAt(j)=='"')
+				{
+					counter++;
+				}
+				}
+				if(counter%2!=0)
+				{
+					temp=temp.concat(" ");
+				}
+			}
+			else
+			{
+				temp=temp.concat(String.valueOf(xpath.charAt(i)));
+			}
+		}
+			
+		System.out.println("AFTER XPATH:   "+temp);
+		return temp;
 	}
 	
 	

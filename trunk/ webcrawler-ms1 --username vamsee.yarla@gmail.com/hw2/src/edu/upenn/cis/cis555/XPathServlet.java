@@ -3,6 +3,7 @@
  */
 package edu.upenn.cis.cis555;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -50,7 +51,15 @@ public class XPathServlet extends HttpServlet{
 		System.out.println("XPATH is:   "+request.getParameterValues("xpath"));
 		XPathEngine engine=new XPathEngine(request.getParameterValues("xpath"));
 		
+		
+		
 		System.out.println("URL:  "+request.getParameterValues("url"));
+		HttpClient client=new HttpClient(request.getParameterValues("url")[0]);
+		
+		ByteArrayOutputStream outStream=client.fetchData();
+		System.out.println("LENGTH INPUT: "+outStream.size());
+		
+		/*
 		Document root=engine.createDOM(request.getParameterValues("url"));
 	
 	
@@ -76,7 +85,7 @@ public class XPathServlet extends HttpServlet{
 		//SOMETHING WRONG WITH SUPPLIED URL
 		//TODO
 		}
-		
+		*/
 		
 	}
 		

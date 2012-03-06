@@ -1015,7 +1015,7 @@ public class HandleReq {
             else{        	
          	
              bw.write((String.valueOf(htmlVersion)+" "+"200 OK\n").toString().getBytes());
-            }
+            
              Date headDate =new Date(System.currentTimeMillis());
      	   
      	   	 DateFormat headformatter=new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
@@ -1095,7 +1095,7 @@ public class HandleReq {
                
                 read.close();
              }
-            
+            } 
         }
         catch(Exception e)
         {
@@ -1124,8 +1124,8 @@ public class HandleReq {
 			//		e.printStackTrace();
 				}
 			}
-          
         }
+        
         
      }//fileexist fn
     
@@ -1342,7 +1342,7 @@ public class HandleReq {
     	           
     	         }
     	         
-           
+    	   
     	   }//server error fn
     	   	 
     /*

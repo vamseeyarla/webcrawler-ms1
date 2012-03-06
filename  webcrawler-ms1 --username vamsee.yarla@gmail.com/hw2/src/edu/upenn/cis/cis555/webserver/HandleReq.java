@@ -1015,7 +1015,7 @@ public class HandleReq {
             else{        	
          	
              bw.write((String.valueOf(htmlVersion)+" "+"200 OK\n").toString().getBytes());
-           
+            }
              Date headDate =new Date(System.currentTimeMillis());
      	   
      	   	 DateFormat headformatter=new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
@@ -1058,8 +1058,13 @@ public class HandleReq {
              
              bw.write(("Last-Modified: "+String.valueOf(formattedDate)+"\n").toString().getBytes());
              bw.write("Connection: close\n".toString().getBytes());
-             bw.write("Server: HTTPServer\n".toString().getBytes());
-             bw.write(("\n").toString().getBytes());
+             bw.write("Server: HTTPServer".toString().getBytes());
+             bw.write((String.valueOf((char)13)).getBytes());
+             bw.write((String.valueOf((char)10)).getBytes());
+             bw.write((String.valueOf((char)13)).getBytes());
+             bw.write((String.valueOf((char)10)).getBytes());
+            
+          
              
            
              if(met.equalsIgnoreCase("GET") || met.equalsIgnoreCase("POST")){
@@ -1090,7 +1095,7 @@ public class HandleReq {
                
                 read.close();
              }
-            }
+            
         }
         catch(Exception e)
         {
@@ -1224,8 +1229,11 @@ public class HandleReq {
                   bw.write("Date: "+date+"\n"); 
           	   	
                   bw.write("Server: HTTPServer\n");
-                  bw.write("Connection: close\n");
-                  bw.write("\n");
+                  bw.write("Connection: close");
+                  bw.write((String.valueOf((char)13)));
+                  bw.write((String.valueOf((char)10)));
+                  bw.write((String.valueOf((char)13)));
+                  bw.write((String.valueOf((char)10)));
                    
                   if(met.equalsIgnoreCase("GET") || met.equalsIgnoreCase("POST")){
                    bw.write("<html><head><title>404 Not Found</title></head><body>");
@@ -1293,8 +1301,11 @@ public class HandleReq {
                       bw.write("Date: "+date+"\n"); 
               	   	
                       bw.write("Server: HTTPServer\n");
-                      bw.write("Connection: close\n");
-                      bw.write("\n");
+                      bw.write("Connection: close");
+                      bw.write((String.valueOf((char)13)));
+                      bw.write((String.valueOf((char)10)));
+                      bw.write((String.valueOf((char)13)));
+                      bw.write((String.valueOf((char)10)));
                        
                       if(met.equalsIgnoreCase("GET") || met.equalsIgnoreCase("POST")){
                        bw.write("<html><head><title>500 Internel Server Error</title></head><body>");

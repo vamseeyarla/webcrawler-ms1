@@ -104,7 +104,7 @@ public class XPathEngine {
 			try
 			{
 			url=s[0];
-					url="http://localhost:1234/web.xml";         
+		//			url="http://localhost:1234/web.xml";         
 			 doc=DocumentBuilderFactory.newInstance();
 	         docBuilder = doc.newDocumentBuilder();
        /*
@@ -367,7 +367,7 @@ public class XPathEngine {
 				
 			}
 			
-			else if(tempAtt.length()>8 && tempAtt.substring(0,8).equalsIgnoreCase("contains"))
+			else if(tempAtt.length()>8 && tempAtt.substring(0,8).equalsIgnoreCase("contains("))
 			{
 				//TODO ; For contains
 				/*
@@ -393,7 +393,7 @@ public class XPathEngine {
 					if(root.getChildNodes().item(z).getNodeName().equalsIgnoreCase("#text"))
 					{
 						System.out.println("CONTAINS() VALUE:  "+root.getChildNodes().item(z).getNodeValue().trim());
-						if(root.getChildNodes().item(z).getNodeValue().trim().equalsIgnoreCase(pairs[1]))
+						if(root.getChildNodes().item(z).getNodeValue().trim().indexOf(pairs[1])!=-1)
 						{
 						internal=true;
 						break;
@@ -449,25 +449,108 @@ public class XPathEngine {
 	{
 		if(statuses==null || statuses.length>=i)
 		{
-			if(xpaths[i-1].charAt(0)!='/' || xpaths[i-1].indexOf("//")!=-1 || xpaths[i-1].indexOf("[[")!=-1 || xpaths[i-1].indexOf("::")!=-1|| xpaths[i-1].indexOf("==")!=-1 || xpaths[i-1].indexOf("@@")!=-1 || xpaths[i-1].indexOf("((")!=-1 || xpaths[i-1].indexOf("/[")!=-1)
+			xpathIsCorrect[i-1]=true;
+			
+			if(xpaths[i-1].charAt(0)!='/' || xpaths[i-1].indexOf("//")!=-1 || xpaths[i-1].indexOf("[[")!=-1 || xpaths[i-1].indexOf("::")!=-1|| xpaths[i-1].indexOf("==")!=-1 || xpaths[i-1].indexOf("@@")!=-1 || xpaths[i-1].indexOf("((")!=-1 || xpaths[i-1].indexOf("/[")!=-1 )
 			{
 				System.out.println("XPath Verfication Failed!");
 				xpathIsCorrect[i-1]=false;
 				return false;
 			}
-	
+			
+			/*
+			 * Code for XPath Validation
+			 */
+		/*	else
+			{
+				String xpath=xpaths[i-1];
+				xpath=xpath.substring(1);
+				
+			
+		       xpathIsCorrect[i-1]=checker(xpath);		
+				return xpathIsCorrect[i-1];
+			}
+	*/
 			else
 			{
+				if(xpaths[i-1].charAt(xpaths[i-1].length()-1)=='/')
+				{
+					xpaths[i-1]=xpaths[i-1].substring(0,xpaths[i-1].length()-1);
+				}
 				xpathIsCorrect[i-1]=true;
 				return true;
 			}
-			
 			
 		}
 		else
 		{
 			return false;
 		}
+		
+	}
+	
+	
+	public boolean checker(String xpath)
+	{
+		while(xpath!=null)
+		{
+			System.out.println("XPATH VALIDATION: "+xpath);
+			String node="";
+			
+			for(int z=0;z<xpath.length();z++)
+			{
+				if(xpath.charAt(z)!='/' && xpath.charAt(z)!='[')
+				{
+				node=node.concat(String.valueOf(xpath.charAt(z)));
+				}
+				else if(xpath.charAt(z)=='[')
+				{
+					if(node.charAt(0)>=48 && node.charAt(0)<=57 && node.charAt(0)==';' && node.charAt(0)==',' && node.charAt(0)=='.' && node.charAt(0)==':' && node.charAt(0)=='|' && node.charAt(0)=='<' && node.charAt(0)=='>' && node.charAt(0)=='?' && node.charAt(0)=='/' && node.charAt(0)=='\\' && node.charAt(0)=='~' && node.charAt(0)=='+' && node.charAt(0)=='-' && node.charAt(0)==';' && node.charAt(0)=='"' && node.charAt(0)=='\'')
+					{
+						
+						return false;
+					}
+					else if((node.length()>=3) && node.substring(0, 3).equalsIgnoreCase("xml"))
+					{
+						
+						return false;
+					}
+					
+					
+					
+					
+					
+				}
+				else if(xpath.charAt(z)=='/')
+				{
+					if(node.charAt(0)>=48 && node.charAt(0)<=57 && node.charAt(0)==';' && node.charAt(0)==',' && node.charAt(0)=='.' && node.charAt(0)==':' && node.charAt(0)=='|' && node.charAt(0)=='<' && node.charAt(0)=='>' && node.charAt(0)=='?' && node.charAt(0)=='/' && node.charAt(0)=='\\' && node.charAt(0)=='~' && node.charAt(0)=='+' && node.charAt(0)=='-' && node.charAt(0)==';' && node.charAt(0)=='"' && node.charAt(0)=='\'')
+					{
+						
+						return false;
+					}
+					else if((node.length()>=3) && node.substring(0, 3).equalsIgnoreCase("xml"))
+					{
+						
+						return false;
+					}
+					if(z!=xpath.length())
+					{
+					String temps=xpath.substring(z);
+					xpath="";
+					xpath=temps;
+					break;
+					}
+					else
+					{
+						xpath=null;
+						break;
+					}
+					
+				}
+			}
+			
+		}
+		return true;
 	}
 	
 	

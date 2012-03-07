@@ -3,6 +3,7 @@
  */
 package edu.upenn.cis.cis555;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.w3c.dom.Document;
+import org.w3c.tidy.Tidy;
 
 /**
  * @author cis555
@@ -93,7 +95,7 @@ public class XPathServlet extends HttpServlet{
 	
 	    if(outStream==null)
 		{
-			//TODO: Problem with URL Specified..
+			//: Problem with URL Specified..
 			PrintWriter out=response.getWriter();
 			out.println("<HTML>");
 			out.println("<HEAD>");
@@ -124,12 +126,12 @@ public class XPathServlet extends HttpServlet{
 		}
 		else
 		{
+			
+			
+			
 		System.out.println("LENGTH INPUT: "+outStream.size());
-		
-		
-		Document root=engine.createDOM(outStream);
-	
-	
+
+		Document root=engine.createDOM(outStream,client);
 		
 		if(root!=null)
 		{
@@ -137,15 +139,16 @@ public class XPathServlet extends HttpServlet{
 			{
 			if(!engine.xpathIsCorrect[i-1])
 			{
-				//TODO XPath not correct
+				// XPath not correct
+				// Ignoring this XPath and proceeding with others
 			}
 			else
 			{
-				//TODO CALL EVALAUTE FN
+				// CALL EVALAUTE FN
 				boolean[] status=engine.evaluate(root);
 			}
 			}
-			//TODO PRINTING DATA TO USER
+			// PRINTING DATA TO USER
 			PrintWriter out=response.getWriter();
 			out.println("<HTML>");
 			out.println("<HEAD>");
@@ -179,7 +182,7 @@ public class XPathServlet extends HttpServlet{
 		else
 		{
 		//SOMETHING WRONG WITH SUPPLIED URL
-		//TODO
+		//
 			PrintWriter out=response.getWriter();
 			out.println("<HTML>");
 			out.println("<HEAD>");
@@ -188,7 +191,7 @@ public class XPathServlet extends HttpServlet{
 			out.println("</TITLE>");
 			out.println("</HEAD>");
 			out.println("<BODY>");
-			out.println("There has been an error assocaited while parsing the data of the URL.</br> Program Terminated");
+			out.println("There has been an error assocaited while parsing the data of the URL. Or the MIME Type is not supported</br> Program Terminated");
 			out.println("</BODY>");
 			out.println("</HTML>");
 		}

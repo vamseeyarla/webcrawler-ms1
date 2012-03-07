@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.tidy.Tidy;
 
 
 
@@ -84,39 +85,65 @@ public class XPathEngine {
 	}
 	
 	
-	public Document createDOM(ByteArrayOutputStream outStream)
+	public Document createDOM(ByteArrayOutputStream outStream, HttpClient client)
 	{
+	System.out.println(client.ConType);
 	
-		DocumentBuilderFactory doc=null;
-		DocumentBuilder docBuilder=null;
-		Document docHead=null;
-	
-			try
-			{
+		if(client.ConType==null)
+		{
+			return null;
+		}
+		else if(client.ConType.equalsIgnoreCase("XML"))
+		{
+
+			DocumentBuilderFactory doc=null;
+			DocumentBuilder docBuilder=null;
+			Document docHead=null;
+		
+				try
+				{
+				
+			 doc=DocumentBuilderFactory.newInstance();
+		         docBuilder = doc.newDocumentBuilder();
+	    
+		ByteArrayInputStream stream=new ByteArrayInputStream(outStream.toByteArray());
+		
+	        docHead = docBuilder.parse(stream);
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					docHead=null;
+				}
+				
+				
+				return docHead;
+		}
+		else if(client.ConType.equalsIgnoreCase("HTML"))
+		{
+			Document docHead=null;
+		
+			try{
 			
-		 doc=DocumentBuilderFactory.newInstance();
-	         docBuilder = doc.newDocumentBuilder();
-    
-	ByteArrayInputStream stream=new ByteArrayInputStream(outStream.toByteArray());
-	
-        docHead = docBuilder.parse(stream);
-	
-			
-			
-			
-			//Code to initialize XML/HTML as DOM
+			ByteArrayInputStream stream=new ByteArrayInputStream(outStream.toByteArray());
+			Tidy tidy=new Tidy();
+			tidy.setTidyMark(false);
+			tidy.setShowWarnings(false);
+			docHead=tidy.parseDOM(stream, System.out);
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
-				docHead=null;
+				//ERROR IN PARSING HTML
 			}
-			
-			
 			return docHead;
-			
-			
+		}
 		
+		else
+		{
+			return null;
+		}
+			
+			//Code to initialize XML/HTML as DOM	
 	}
 	
 	
@@ -162,10 +189,7 @@ public class XPathEngine {
 				}
 			    System.out.print(links.nodeName+":::");
 				System.out.println(links.attributes);
-				
-				/*
-				 * TODO Start writign the evauation fn
-				 */
+			
 				statuses[i]=isMatch(root.cloneNode(true),xpathExp[i]);
 				System.out.println("STATUS:  "+statuses[i]);
 			}
@@ -194,7 +218,7 @@ public class XPathEngine {
 				}
 				}
 				
-				//TODO PUT ATTRIBUTE CHECKING CODE
+			
 				if(node.link!=null)
 				{
 			     boolean status=isMatch(root.getChildNodes().item(i).cloneNode(true), node.link);
@@ -267,7 +291,7 @@ public class XPathEngine {
 			{
 				boolean internal=false;
 				System.out.println("ENTERED text()");
-				//TODO ; For text() data
+				
 				String []pairs=tempAtt.split("=");
 				pairs[0]=pairs[0].trim();
 				pairs[1]=pairs[1].trim();
@@ -307,7 +331,7 @@ public class XPathEngine {
 				 */
 				boolean internal=false;
 				System.out.println("ENTERED @ATT()");
-				//TODO ; For text() data
+			
 				String []pairs=tempAtt.split("=");
 				pairs[0]=pairs[0].trim();
 				pairs[0]=pairs[0].substring(1);
@@ -345,13 +369,13 @@ public class XPathEngine {
 			
 			else if(tempAtt.length()>8 && tempAtt.substring(0,9).equalsIgnoreCase("contains("))
 			{
-				//TODO ; For contains
+				// ; For contains
 				/*
 				 * Contains Handling
 				 */
 				boolean internal=false;
 				System.out.println("ENTERED CONTAINS()");
-				//TODO ; For text() data
+				//; For text() data
 				String[] temp=tempAtt.split("contains");
 				temp[1]=temp[1].trim();
 				temp[1]=temp[1].substring(1);
@@ -583,7 +607,7 @@ public class XPathEngine {
 					{
 						boolean internal=true;
 						System.out.println("ENTERED text()");
-						//TODO ; For text() data
+						//; For text() data
 						if(tempAtt.indexOf("=")==-1 || tempAtt.indexOf("\"")==-1)
 						{
 							internal=false;
@@ -625,7 +649,7 @@ public class XPathEngine {
 						 */
 						boolean internal=true;
 						System.out.println("ENTERED @ATT()");
-						//TODO ; For text() data
+						//; For text() data
 						if(tempAtt.indexOf("=")==-1 || tempAtt.indexOf("\"")==-1)
 						{
 							internal=false;
@@ -693,13 +717,13 @@ public class XPathEngine {
 					
 					else if(tempAtt.length()>8 && tempAtt.substring(0,9).equalsIgnoreCase("contains("))
 					{
-						//TODO ; For contains
+						// ; For contains
 						/*
 						 * Contains Handling
 						 */
 						boolean internal=true;
 						System.out.println("ENTERED CONTAINS()");
-						//TODO ; For text() data
+						// ; For text() data
 						String[] temp=tempAtt.split("contains");
 						
 						if(temp.length!=2)

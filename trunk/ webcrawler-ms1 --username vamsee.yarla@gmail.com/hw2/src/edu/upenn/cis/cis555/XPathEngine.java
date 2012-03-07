@@ -575,6 +575,7 @@ public class XPathEngine {
 				{
 					System.out.println("ARRAYLIST ELEM:  "+attributes.get(i));
 					String tempAtt=attributes.get(i);
+					tempAtt=tempAtt.trim();
 					tempAtt=tempAtt.substring(1).trim();
 					tempAtt=tempAtt.substring(0,tempAtt.length()-1).trim();
 					
@@ -638,6 +639,35 @@ public class XPathEngine {
 							return false;
 						}
 						pairs[0]=pairs[0].trim();
+						pairs[0]=pairs[0].substring(1);
+						
+						
+						if(pairs[0].length()<1 ||(pairs[0].charAt(0)>=48 && pairs[0].charAt(0)<=57) || pairs[0].charAt(0)==';' || pairs[0].charAt(0)==',' || pairs[0].charAt(0)=='.' || pairs[0].charAt(0)==':' || pairs[0].charAt(0)=='|' || pairs[0].charAt(0)=='<' || pairs[0].charAt(0)=='>' || pairs[0].charAt(0)=='?' || pairs[0].charAt(0)=='/' || pairs[0].charAt(0)=='\\' || pairs[0].charAt(0)=='~' || pairs[0].charAt(0)=='+' || pairs[0].charAt(0)=='-' || pairs[0].charAt(0)==';' || pairs[0].charAt(0)=='"' || pairs[0].charAt(0)=='\'')
+						{		
+							internal=false;
+							return false;
+						}
+						else if((pairs[0].length()>=3) && pairs[0].substring(0, 3).equalsIgnoreCase("xml"))
+						{
+							internal=false;
+							return false;
+						}
+						else
+						{
+							for(int ix=1;ix<pairs[0].length();ix++)
+							{
+								if((pairs[0].charAt(ix)>=48 && pairs[0].charAt(ix)<=57) || (pairs[0].charAt(ix)>=65 && pairs[0].charAt(ix)<=90) || (pairs[0].charAt(ix)>=97 && pairs[0].charAt(ix)<=122) || (pairs[0].charAt(ix)=='_')|| (pairs[0].charAt(ix)=='-')|| (pairs[0].charAt(ix)==':') );
+								else
+								{
+									internal=false;
+									return false;
+								}
+							}		
+						}
+						
+						
+						
+						
 						pairs[1]=pairs[1].trim();
 						
 						if(pairs[1].indexOf("\"")!=0 || pairs[1].lastIndexOf("\"")!=pairs[1].length()-1)

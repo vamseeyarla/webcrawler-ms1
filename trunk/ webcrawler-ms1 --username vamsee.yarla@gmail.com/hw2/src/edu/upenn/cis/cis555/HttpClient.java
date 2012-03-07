@@ -6,6 +6,7 @@ package edu.upenn.cis.cis555;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
@@ -91,7 +92,9 @@ public ByteArrayOutputStream fetchData()
 				if(firstHead.indexOf("404")!=-1 || firstHead.indexOf("500")!=-1)
 				{
 					System.out.println("SERVER ERROR AT REMOTE LOCATION");
-					return null;
+					outBytes=new ByteArrayOutputStream();
+					outBytes.write("404".getBytes());
+					return outBytes;
 				}
 				else
 				{
@@ -146,7 +149,15 @@ public ByteArrayOutputStream fetchData()
 		{
 			System.out.println("Error in reading file");
 			e.printStackTrace();
-			return null;
+			outBytes=new ByteArrayOutputStream();
+			try {
+				outBytes.write("404".getBytes());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			return outBytes;
+			//return null;
 		}
 	}
 	

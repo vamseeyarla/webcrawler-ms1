@@ -43,9 +43,9 @@ public class XPathServlet extends HttpServlet{
 		out.println("<td><input type=\"text\" name=\"url\" size=\"30\"></td>");
 		out.println("</tr><tr>");
 		out.println("<td><input type=\"Submit\" name=\"Submit\" ></td>");
-		out.println("</td>");
-		
-		out.println("The URL can be File System Address or any Remote Address; All Remote Addresses are supposed to start with http://");
+		out.println("</tr></table>");
+		out.println("</br></br>");
+		out.println("*** The URL can be File System Address or any Remote Address; All Remote Addresses are supposed to start with http://");
 		
 		out.println("</form>");
 		out.println("</BODY>");
@@ -86,10 +86,12 @@ public class XPathServlet extends HttpServlet{
 		}
 		
 		System.out.println("URL:  "+request.getParameterValues("url"));
+		
 		HttpClient client=new HttpClient(request.getParameterValues("url")[0]);
 		
 		ByteArrayOutputStream outStream=client.fetchData();
-		if(outStream==null)
+	
+	    if(outStream==null)
 		{
 			//TODO: Problem with URL Specified..
 			PrintWriter out=response.getWriter();
@@ -104,6 +106,21 @@ public class XPathServlet extends HttpServlet{
 			out.println("</BODY>");
 			out.println("</HTML>");
 			
+		}
+		
+		if(new String(outStream.toByteArray()).equalsIgnoreCase("404"))
+		{
+			PrintWriter out=response.getWriter();
+			out.println("<HTML>");
+			out.println("<HEAD>");
+			out.println("<TITLE>");
+			out.println("URL Retrival Problem");
+			out.println("</TITLE>");
+			out.println("</HEAD>");
+			out.println("<BODY>");
+			out.println("File cannot be found.</br> Program Terminated");
+			out.println("</BODY>");
+			out.println("</HTML>");
 		}
 		else
 		{

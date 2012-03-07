@@ -1028,17 +1028,22 @@ public class HandleReq {
             	 bw.write(("Content-Type: text/html\n").toString().getBytes());
                  
             }
+             else if(file.indexOf(".xml")!=-1)
+             {
+             	bw.write(("Content-Type: text/xml\n").toString().getBytes());
+                 
+             }
             else if(file.indexOf(".txt")!=-1)
             {
             	bw.write(("Content-Type: text/plain\n").toString().getBytes());
                 
             }
-            else if(new MimetypesFileTypeMap().getContentType(reader).equalsIgnoreCase("image/jpeg"))
+            else if(new MimetypesFileTypeMap().getContentType(reader).equalsIgnoreCase("image/jpeg") || file.indexOf(".jpg")!=-1)
             {
             	bw.write(("Content-Type: image/jpeg\n").toString().getBytes());
                
             }
-            else if(new MimetypesFileTypeMap().getContentType(reader).equalsIgnoreCase("image/png"))
+            else if(new MimetypesFileTypeMap().getContentType(reader).equalsIgnoreCase("image/png")|| file.indexOf(".png")!=-1)
             {
             	bw.write(("Content-Type: image/png\n").toString().getBytes());
                 

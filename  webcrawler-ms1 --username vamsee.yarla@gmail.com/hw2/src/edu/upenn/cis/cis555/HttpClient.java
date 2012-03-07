@@ -21,6 +21,7 @@ import java.net.Socket;
 public class HttpClient {
 	String URL;
 	ByteArrayOutputStream outBytes;
+	String ConType=null;
 public HttpClient(String url)
 {
 	URL=url;
@@ -98,23 +99,47 @@ public ByteArrayOutputStream fetchData()
 				}
 				else
 				{
-					String contentLength=null;
+					//String contentLength=null;
+					String contentType=null;
+					
+					while((contentType=br.readLine()).indexOf("Content-Type")==-1);
+					String type=contentType.substring(contentType.indexOf(":")+1,contentType.length()).trim();
+					if(type.indexOf("xml")!=-1 || type.indexOf("XML")!=-1)
+					{
+						ConType="XML";
+					}
+					else if(type.indexOf("html")!=-1 || type.indexOf("HTML")!=-1)
+					{
+						ConType="HTML";
+					}
+					/*
 					while((contentLength=br.readLine()).indexOf("Content-Length")==-1);
 				
 					Length=Integer.parseInt((contentLength.substring(contentLength.indexOf(":")+1,contentLength.length()).trim()));
-					int x;
-					while(!((x=br.read())==13 && (x=br.read())==10 && (x=br.read())==13 && (x=br.read())==10));
-				
+						*/
+					
+					/*
 					 char[] tempc=new char[Length];
 					 br.read(tempc, 0, Length);
+					 StringBuilder sb=new StringBuilder();
+       			  	 sb.append(tempc);
+					  outBytes.write(sb.toString().getBytes());
+					 */
+					int x;
+					while(!((x=br.read())==13 && (x=br.read())==10 && (x=br.read())==13 && (x=br.read())==10));
+			
+					outBytes=new ByteArrayOutputStream();
+					while((x=br.read())!=-1)
+					{
+						outBytes.write(x);
+					}
 					 br.close();
 					 out.close();
        			  	 socket.close();
-       			  	 StringBuilder sb=new StringBuilder();
-       			  	 sb.append(tempc);
-       			  	 outBytes=new ByteArrayOutputStream();
+       			  	
+       			  	
        			  	 
-       		      	 outBytes.write(sb.toString().getBytes());
+       		      	
 					
 					
 				}
@@ -153,7 +178,7 @@ public ByteArrayOutputStream fetchData()
 			try {
 				outBytes.write("404".getBytes());
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
+				//  Auto-generated catch block
 				e1.printStackTrace();
 			}
 			return outBytes;

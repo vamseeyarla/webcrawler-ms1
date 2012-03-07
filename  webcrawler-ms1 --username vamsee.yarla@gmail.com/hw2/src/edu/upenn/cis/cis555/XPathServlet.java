@@ -55,9 +55,35 @@ public class XPathServlet extends HttpServlet{
 			HttpServletResponse response) throws ServletException, IOException {
 		
 		System.out.println("XPATH is:   "+request.getParameterValues("xpath"));
-		XPathEngine engine=new XPathEngine(request.getParameterValues("xpath"));
+		int reqNum=0;
+		
+		for(int count=0;count<request.getParameterValues("xpath").length;count++)
+		{
+			if(request.getParameterValues("xpath")[count].equalsIgnoreCase(""));
+			else
+			{
+				reqNum++;
+			}
+		}
+		String [] reqs=new String[reqNum];
+		reqNum=0;
+		for(int count=0;count<request.getParameterValues("xpath").length;count++)
+		{
+			if(request.getParameterValues("xpath")[count].equalsIgnoreCase(""));
+			else
+			{
+				reqs[reqNum]=request.getParameterValues("xpath")[count];
+				reqNum++;
+			}
+		}
 		
 		
+		XPathEngine engine=new XPathEngine(reqs);
+		
+		for(int i=0;i<engine.xpathIsCorrect.length;i++)
+		{
+			System.out.println((i+1)+":   "+String.valueOf(engine.xpathIsCorrect[i]).toUpperCase());
+		}
 		
 		System.out.println("URL:  "+request.getParameterValues("url"));
 		HttpClient client=new HttpClient(request.getParameterValues("url")[0]);
@@ -90,7 +116,7 @@ public class XPathServlet extends HttpServlet{
 		
 		if(root!=null)
 		{
-			for(int i=1;i<=request.getParameterValues("xpath").length;i++)
+			for(int i=1;i<=reqs.length;i++)
 			{
 			if(!engine.xpathIsCorrect[i-1])
 			{
@@ -117,7 +143,7 @@ public class XPathServlet extends HttpServlet{
 			
 			out.println("<table>");
 			
-			for(int i=0;i<request.getParameterValues("xpath").length;i++)
+			for(int i=0;i<reqs.length;i++)
 			{
 				out.println("<tr>");
 				out.println("<td><b>"+engine.xpaths[i]+"</b></td>");
@@ -152,7 +178,8 @@ public class XPathServlet extends HttpServlet{
 		
 		
 	}
+	
 	}
-		
+	
 }
 	

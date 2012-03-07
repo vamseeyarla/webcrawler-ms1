@@ -429,7 +429,7 @@ public class XPathEngine {
 			
 			if(xpaths[i-1].charAt(0)!='/' || xpaths[i-1].indexOf("//")!=-1 || xpaths[i-1].indexOf("[[")!=-1 || xpaths[i-1].indexOf("::")!=-1|| xpaths[i-1].indexOf("==")!=-1 || xpaths[i-1].indexOf("@@")!=-1 || xpaths[i-1].indexOf("((")!=-1 || xpaths[i-1].indexOf("/[")!=-1 )
 			{
-				System.out.println("XPath Verfication Failed!");
+			//	System.out.println("XPath Verfication Failed!");
 				xpathIsCorrect[i-1]=false;
 				return false;
 			}
@@ -437,16 +437,19 @@ public class XPathEngine {
 			/*
 			 * Code for XPath Validation
 			 */
-		/*	else
+			else
 			{
+				if(xpaths[i-1].charAt(xpaths[i-1].length()-1)=='/')
+				{
+					xpaths[i-1]=xpaths[i-1].substring(0,xpaths[i-1].length()-1);
+				}
+				
 				String xpath=xpaths[i-1];
 				xpath=xpath.substring(1);
-				
-			
-		       xpathIsCorrect[i-1]=checker(xpath);		
+		        xpathIsCorrect[i-1]=checker(xpath);		
 				return xpathIsCorrect[i-1];
 			}
-	*/
+	/*
 			else
 			{
 				if(xpaths[i-1].charAt(xpaths[i-1].length()-1)=='/')
@@ -456,7 +459,7 @@ public class XPathEngine {
 				xpathIsCorrect[i-1]=true;
 				return true;
 			}
-			
+			*/
 		}
 		else
 		{
@@ -468,66 +471,287 @@ public class XPathEngine {
 	
 	public boolean checker(String xpath)
 	{
-		while(xpath!=null)
+		xpath nodes=visualizeXPath(xpath);
+		
+		while(nodes.link!=null)
 		{
-			System.out.println("XPATH VALIDATION: "+xpath);
-			String node="";
-			
-			for(int z=0;z<xpath.length();z++)
+		
+			boolean task=justDoIt(nodes);
+			if(task)
 			{
-				if(xpath.charAt(z)!='/' && xpath.charAt(z)!='[')
+				nodes=nodes.link;
+			}
+			else
+			{
+				return false;
+			}					
+		}
+		
+		boolean task=justDoIt(nodes);
+		
+		if(task)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}			
+		
+	}
+	
+	
+	
+	public boolean justDoIt(xpath nodes)
+	{
+		nodes.nodeName=nodes.nodeName.trim();
+		if(nodes.attributes!=null)
+		{
+		nodes.attributes=nodes.attributes.trim();
+		}
+		
+			if(nodes.nodeName.length()<1 ||(nodes.nodeName.charAt(0)>=48 && nodes.nodeName.charAt(0)<=57) || nodes.nodeName.charAt(0)==';' || nodes.nodeName.charAt(0)==',' || nodes.nodeName.charAt(0)=='.' || nodes.nodeName.charAt(0)==':' || nodes.nodeName.charAt(0)=='|' || nodes.nodeName.charAt(0)=='<' || nodes.nodeName.charAt(0)=='>' || nodes.nodeName.charAt(0)=='?' || nodes.nodeName.charAt(0)=='/' || nodes.nodeName.charAt(0)=='\\' || nodes.nodeName.charAt(0)=='~' || nodes.nodeName.charAt(0)=='+' || nodes.nodeName.charAt(0)=='-' || nodes.nodeName.charAt(0)==';' || nodes.nodeName.charAt(0)=='"' || nodes.nodeName.charAt(0)=='\'')
+			{		
+				return false;
+			}
+			else if((nodes.nodeName.length()>=3) && nodes.nodeName.substring(0, 3).equalsIgnoreCase("xml"))
+			{
+				return false;
+			}
+			else
+			{
+				for(int i=1;i<nodes.nodeName.length();i++)
 				{
-				node=node.concat(String.valueOf(xpath.charAt(z)));
-				}
-				else if(xpath.charAt(z)=='[')
+					if((nodes.nodeName.charAt(i)>=48 && nodes.nodeName.charAt(i)<=57) || (nodes.nodeName.charAt(i)>=65 && nodes.nodeName.charAt(i)<=90) || (nodes.nodeName.charAt(i)>=97 && nodes.nodeName.charAt(i)<=122) || (nodes.nodeName.charAt(i)=='_')|| (nodes.nodeName.charAt(i)=='-')|| (nodes.nodeName.charAt(i)==':') );
+					else
+					{
+						return false;
+					}
+				}		
+			}
+			
+			if(nodes.attributes!=null)
+			{
+				
+				//STRAT PROCESSING ATTRIBUTES
+				
+				String attribute=nodes.attributes;
+				ArrayList<String> attributes=new ArrayList<String>();
+				
+				int position=0;
+				int cursorPos=0;
+			    int match=attribute.length()-1;
+			    boolean firstOrNot=true;
+				while((match=attribute.indexOf("]",cursorPos))!=-1)
 				{
-					if(node.charAt(0)>=48 && node.charAt(0)<=57 && node.charAt(0)==';' && node.charAt(0)==',' && node.charAt(0)=='.' && node.charAt(0)==':' && node.charAt(0)=='|' && node.charAt(0)=='<' && node.charAt(0)=='>' && node.charAt(0)=='?' && node.charAt(0)=='/' && node.charAt(0)=='\\' && node.charAt(0)=='~' && node.charAt(0)=='+' && node.charAt(0)=='-' && node.charAt(0)==';' && node.charAt(0)=='"' && node.charAt(0)=='\'')
+					System.out.println("ATTRIBUTE SPLIT:  "+attribute.substring(position,match+1));
+					int counter=0;
+					for(int i=0;i<attribute.substring(position,match+1).length();i++)
 					{
-						
-						return false;
+						if(attribute.substring(position,match+1).charAt(i)=='[')
+						{
+							counter++;
+						}
+						else if(attribute.substring(position,match+1).charAt(i)==']')
+						{
+							counter--;
+						}
 					}
-					else if((node.length()>=3) && node.substring(0, 3).equalsIgnoreCase("xml"))
+					if(counter==0)
 					{
-						
-						return false;
-					}
-					
-					
-					
-					
-					
-				}
-				else if(xpath.charAt(z)=='/')
-				{
-					if(node.charAt(0)>=48 && node.charAt(0)<=57 && node.charAt(0)==';' && node.charAt(0)==',' && node.charAt(0)=='.' && node.charAt(0)==':' && node.charAt(0)=='|' && node.charAt(0)=='<' && node.charAt(0)=='>' && node.charAt(0)=='?' && node.charAt(0)=='/' && node.charAt(0)=='\\' && node.charAt(0)=='~' && node.charAt(0)=='+' && node.charAt(0)=='-' && node.charAt(0)==';' && node.charAt(0)=='"' && node.charAt(0)=='\'')
-					{
-						
-						return false;
-					}
-					else if((node.length()>=3) && node.substring(0, 3).equalsIgnoreCase("xml"))
-					{
-						
-						return false;
-					}
-					if(z!=xpath.length())
-					{
-					String temps=xpath.substring(z);
-					xpath="";
-					xpath=temps;
-					break;
+						attributes.add(attribute.substring(position,match+1));
+						position=match+1;
+						cursorPos=match+1;
 					}
 					else
 					{
-						xpath=null;
-						break;
+						cursorPos=match+1;
+					}
+				}
+				
+				boolean result=true;
+				int beg=0;
+				for(int i=0;i<attributes.size();i++)
+				{
+					System.out.println("ARRAYLIST ELEM:  "+attributes.get(i));
+					String tempAtt=attributes.get(i);
+					tempAtt=tempAtt.substring(1).trim();
+					tempAtt=tempAtt.substring(0,tempAtt.length()-1).trim();
+					
+					if(tempAtt.length()>6 && tempAtt.substring(0,6).equalsIgnoreCase("text()"))
+					{
+						boolean internal=true;
+						System.out.println("ENTERED text()");
+						//TODO ; For text() data
+						if(tempAtt.indexOf("=")==-1 || tempAtt.indexOf("\"")==-1)
+						{
+							internal=false;
+							return false;
+						}
+						String []pairs=tempAtt.split("=");
+						if(pairs.length<2 || pairs.length>2)
+						{
+							internal=false;
+							return false;
+						}
+									
+						pairs[0]=pairs[0].trim();
+						pairs[1]=pairs[1].trim();
+						
+						if(pairs[1].indexOf("\"")!=0 || pairs[1].lastIndexOf("\"")!=pairs[1].length()-1)
+						{
+							internal=false;
+							return false;
+						}
+					
+						if(result && beg==0)
+						{
+							result=internal;
+							beg++;
+						}
+						else
+						{
+						result=internal && result;
+						beg++;
+						}
+						System.out.println("RESULT:  "+internal);
+						continue;
+					}
+					else if(tempAtt.length()>1 && tempAtt.substring(0,1).equalsIgnoreCase("@"))
+					{
+						/*
+						 * Attribute Handling
+						 */
+						boolean internal=true;
+						System.out.println("ENTERED @ATT()");
+						//TODO ; For text() data
+						if(tempAtt.indexOf("=")==-1 || tempAtt.indexOf("\"")==-1)
+						{
+							internal=false;
+							return false;
+						}
+						String []pairs=tempAtt.split("=");
+						
+						if(pairs.length<2 || pairs.length>2)
+						{
+							internal=false;
+							return false;
+						}
+						pairs[0]=pairs[0].trim();
+						pairs[1]=pairs[1].trim();
+						
+						if(pairs[1].indexOf("\"")!=0 || pairs[1].lastIndexOf("\"")!=pairs[1].length()-1)
+						{
+							internal=false;
+							return false;
+						}
+				
+						if(result && beg==0)
+						{
+							result=internal;
+							beg++;
+						}
+						else
+						{
+						result=internal && result;
+						beg++;
+						}
+						System.out.println("RESULT:  "+internal);
+						continue;
+						
+					}
+					
+					else if(tempAtt.length()>8 && tempAtt.substring(0,9).equalsIgnoreCase("contains("))
+					{
+						//TODO ; For contains
+						/*
+						 * Contains Handling
+						 */
+						boolean internal=true;
+						System.out.println("ENTERED CONTAINS()");
+						//TODO ; For text() data
+						String[] temp=tempAtt.split("contains");
+						
+						if(temp.length!=2)
+						{
+							internal=false;
+							return false;
+						}
+						
+						temp[1]=temp[1].trim();
+						temp[1]=temp[1].substring(1).trim();
+						temp[1]=temp[1].substring(0,temp[1].length()-1).trim();
+						
+						String []pairs=temp[1].split(",");						
+						if(pairs.length!=2)
+						{
+							internal=false;
+							return false;
+						}
+						
+						
+						pairs[0]=pairs[0].trim();
+						pairs[1]=pairs[1].trim();
+						if(!pairs[0].equalsIgnoreCase("text()") || pairs[1].indexOf("\"")!=0 || pairs[1].lastIndexOf("\"")!=pairs[1].length()-1)
+						{
+							internal=false;
+							return false;
+						}
+						
+						if(result && beg==0)
+						{
+							result=internal;
+							beg++;
+						}
+						else
+						{
+						result=internal && result;
+						beg++;
+						}
+						System.out.println("RESULT:  "+internal);
+						continue;
+						
+					}
+					else
+					{
+						System.out.println("ENTERED ELEMENT PARSING!");
+						boolean internal=true;
+					
+					internal= checker(" "+tempAtt);
+					
+					if(result && beg==0)
+					{
+						result=internal;
+						beg++;
+					}
+					else
+					{
+					result=internal && result;
+					beg++;
+					}
+					System.out.println("RESULT:  "+internal);
+					continue;
+					
+					
 					}
 					
 				}
+				
+				System.out.println("ULTI RESULT:"+result);
+				return result;
+				
+						
+			}
+			else
+			{
+				return true;
 			}
 			
-		}
-		return true;
+	
 	}
+	
+	
+	
 	
 	
 	class xpath
@@ -657,3 +881,72 @@ public class XPathEngine {
 		return start;
 	}
 }
+
+
+////////////////////////
+/////////////////////////
+/////////////////////////
+////////////////////////
+
+
+
+/*
+while(xpath!=null)
+{
+	System.out.println("XPATH VALIDATION: "+xpath);
+	String node="";
+	
+	for(int z=0;z<xpath.length();z++)
+	{
+		if(xpath.charAt(z)!='/' && xpath.charAt(z)!='[')
+		{
+		node=node.concat(String.valueOf(xpath.charAt(z)));
+		}
+		else if(xpath.charAt(z)=='[')
+		{
+			if(node.charAt(0)>=48 && node.charAt(0)<=57 && node.charAt(0)==';' && node.charAt(0)==',' && node.charAt(0)=='.' && node.charAt(0)==':' && node.charAt(0)=='|' && node.charAt(0)=='<' && node.charAt(0)=='>' && node.charAt(0)=='?' && node.charAt(0)=='/' && node.charAt(0)=='\\' && node.charAt(0)=='~' && node.charAt(0)=='+' && node.charAt(0)=='-' && node.charAt(0)==';' && node.charAt(0)=='"' && node.charAt(0)=='\'')
+			{
+				
+				return false;
+			}
+			else if((node.length()>=3) && node.substring(0, 3).equalsIgnoreCase("xml"))
+			{
+				
+				return false;
+			}
+			
+			
+			
+			
+			
+		}
+		else if(xpath.charAt(z)=='/')
+		{
+			if(node.charAt(0)>=48 && node.charAt(0)<=57 && node.charAt(0)==';' && node.charAt(0)==',' && node.charAt(0)=='.' && node.charAt(0)==':' && node.charAt(0)=='|' && node.charAt(0)=='<' && node.charAt(0)=='>' && node.charAt(0)=='?' && node.charAt(0)=='/' && node.charAt(0)=='\\' && node.charAt(0)=='~' && node.charAt(0)=='+' && node.charAt(0)=='-' && node.charAt(0)==';' && node.charAt(0)=='"' && node.charAt(0)=='\'')
+			{
+				
+				return false;
+			}
+			else if((node.length()>=3) && node.substring(0, 3).equalsIgnoreCase("xml"))
+			{
+				
+				return false;
+			}
+			if(z!=xpath.length())
+			{
+			String temps=xpath.substring(z);
+			xpath="";
+			xpath=temps;
+			break;
+			}
+			else
+			{
+				xpath=null;
+				break;
+			}
+			
+		}
+	}
+	
+}
+*/

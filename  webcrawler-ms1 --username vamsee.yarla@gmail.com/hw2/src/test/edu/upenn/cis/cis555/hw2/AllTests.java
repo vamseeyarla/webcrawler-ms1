@@ -1,4 +1,4 @@
-package test.edu.upenn.cis.cis555.hw1;
+package test.edu.upenn.cis.cis555.hw2;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;

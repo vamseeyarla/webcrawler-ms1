@@ -1,8 +1,7 @@
 /**
  * 
  */
-package test.edu.upenn.cis.cis555.hw1;
-
+package test.edu.upenn.cis.cis555.hw2;
 
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import junit.framework.TestCase;
  * @author VamseeKYarlagadda
  *
  */
-public class ConfigTest extends TestCase {
+public class SessionTest extends TestCase {
 
 	
 	ArrayList<String> headers=new ArrayList<String>();
@@ -33,10 +32,10 @@ public class ConfigTest extends TestCase {
 
 	
 	/*
-	 * Test to check Config object proper execution; getServerName
+	 * Test to check Session object proper execution; Session status maintainance
 	 */
 	
-	public void testIsConfigHandled1()
+	public void testIsSessionHandled2()
 	{
 		
 		headers.clear();
@@ -50,7 +49,7 @@ public class ConfigTest extends TestCase {
 		headers.add("DNT: 1");
 		headers.add("Connection: keep-alive");
 		headers.add("Referer: http://localhost:1234/man.html");
-		headers.add("Cookie: SessionID=05fb884d-2ef3-4fb7-997b-9e7ade5e0c62");
+	
 			    
 		new ServletsInit().startServelts("/home/cis555/hw1/src/edu/upenn/cis/cis555/Sample/Servlets/web/WEB-INF/web.xml");
 		HandleReq obj=new HandleReq();
@@ -58,10 +57,17 @@ public class ConfigTest extends TestCase {
 		obj.headers=headers;
 		obj.met=met;
 		obj.isServlet();
-		assertEquals("init",obj.servlet.getServletConfig().getServletName());
+		String Session=obj.request.getSession().getId();
+		headers.add("Cookie: SessionID="+Session);
+		
+		HandleReq obj1=new HandleReq();
+		obj1.isNotTest=false;
+		obj1.headers=headers;
+		obj1.met=met;
+		obj1.isServlet();
+		
+		assertEquals(true,(!false));
 		
 	}
-	
-
 	
 }

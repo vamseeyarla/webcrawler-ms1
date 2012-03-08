@@ -22,10 +22,29 @@ public class HttpClient {
 	String URL;
 	ByteArrayOutputStream outBytes;
 	public String ConType=null;
+	
+	/*
+	 * Constructor of HttpClient that takes a string which contains URL and saves it
+	 * in one of the global variables.
+	 */
 public HttpClient(String url)
 {
 	URL=url;
 }
+
+/*
+ * Function which uses the URL passed to the constructor and check whether it is
+ * 
+ * 1-> A local system file
+ * 2-> Remote file
+ * 
+ *  According to the type, it fetches the file from he system appropriately. 
+	For all the local system files, it directly reads from the system and return the bytes otherwise null or 404 exception.
+	For all remote clients, it frames the header which accepts html and xml 
+	and looks for response and checks the content type field accordingly 
+	and read all the data and store it In bytes and return it to the calling function.
+
+ */
 
 public ByteArrayOutputStream fetchData()
 {

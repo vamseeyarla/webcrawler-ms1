@@ -15,8 +15,6 @@ import org.w3c.tidy.Tidy;
 
 
 
-
-
 /**
  * @author VamseeKYarlagadda
  *
@@ -33,6 +31,13 @@ public class XPathEngine {
 		statuses=null;
 	}
 	
+	/*
+	 * The constructor gets activated whenever the XPathServlet tries to 
+	 * instantiate the object of this class. It take the list of XPaths 
+	 * to be validated and calls isValid function to check whether the 
+	 * XPaths confront to the scheme or not and populate the isXpathCorrect 
+	 * variables accordingly. 
+	 */
 	public XPathEngine(String [] s)
 	{
 		xpaths=s;
@@ -51,6 +56,15 @@ public class XPathEngine {
 		
 	}
 	
+	
+	/*
+	 * 
+	 * This function gets activate d once the isValid function 
+	 * returns true for the following XPath. If it does then 
+	 * this function removes all the unnecessary whitespaces 
+	 * in the program and save it further for processing of 
+	 * evaluate function. 
+	 */
 	public String removeWhiteSpaces(String xpath)
 	{
 		System.out.println("BEFORE XPATH:  "+xpath);
@@ -85,6 +99,14 @@ public class XPathEngine {
 	}
 	
 	
+	/*
+	 * This function gets activated whenever the XPath servlet
+	 *  calls for creation of the DOM object of the specified 
+	 *  file. This function uses the properties of the HTTP 
+	 *  Client to see whether the file is an XML or an HTML and 
+	 *  call appropriate functions like DOM parser for XML and 
+	 *  jTidy for all the HTML files. And ultimately returns a DOM tree. 
+	 */
 	public Document createDOM(ByteArrayOutputStream outStream, HttpClient client)
 	{
 	System.out.println(client.ConType);
@@ -146,6 +168,14 @@ public class XPathEngine {
 			//Code to initialize XML/HTML as DOM	
 	}
 	
+	/*
+	 * This function takes the root of the document as  an input and 
+	 * check for all the XPahs provided by the user whether they confront
+	 *  to the provided file. It calls other functions like VisualizeXPath 
+	 *  and other function like isMatch for further processing of the data. 
+	 *  It proceeds further only when the given XPath is syntactically correct
+	 *   or follows the specs of XML.
+	 */
 	
 	public boolean[] evaluate(Document root)
 	{
@@ -198,6 +228,15 @@ public class XPathEngine {
 		return statuses;
 	}
 	
+	/*
+	 * 
+	 * This function takes the root of the document and also the 
+	 * node to be matched with. It returns a Boolean whether the 
+	 * node is present in the children of the root element to root.
+	 *  This is called recursively over all the elements to make 
+	 *  sure it is present in the file. 
+	 */
+	
 	
 	public boolean isMatch(Node root, xpath node)
 	{
@@ -241,6 +280,16 @@ public class XPathEngine {
 		}
 	}	
 	
+	/*
+	 * This function takes the root of the document and also the node 
+	 * to be matched with. It returns a Boolean whether the node a 
+	 * part of the attributes of the root element to root. This is 
+	 * called recursively over all the elements to make sure it is present
+	 *  in the file.  It checks for all the attributes whether it can be 
+	 *  @attibutes, text(), contains() and also the recursive XPaths. 
+	 *  If it is recursive xpath then it calls the original function 
+	 *  evaluate to isMatch whether it exists or not.
+	 */
 	
 	public boolean checkForAttributes(Node root, xpath node)
 	{
@@ -443,7 +492,13 @@ public class XPathEngine {
 		return result;
 	}
 	
-	
+	/*
+	 * This function takes the element to be searched for and check 
+	 * if the corresponding xpath is according to the standard XML 
+	 * specifications or nt. It calls other functions so that even 
+	 * the recursive xpaths and also it attributes and other properties
+		follow the specs.
+	 */
 	
 	public boolean isValid (int i)
 	{
@@ -492,6 +547,13 @@ public class XPathEngine {
 		
 	}
 	
+	/*
+	 *  This function takes the element to be searched for and check 
+	 * if the corresponding xpath is according to the standard XML 
+	 * specifications or nt. It calls other functions so that even 
+	 * the recursive xpaths and also it attributes and other properties
+		follow the specs.
+	 */
 	
 	public boolean checker(String xpath)
 	{
@@ -524,7 +586,15 @@ public class XPathEngine {
 		
 	}
 	
-	
+	/*
+	 This function takes the element to be searched for and check 
+	 * if the corresponding xpath is according to the standard XML 
+	 * specifications or not. It calls other functions so that even 
+	 * the recursive xpaths and also it attributes and other properties
+		follow the specs.
+		
+		Elements names ad attributes shouldn't start with numbers and other specs.
+	*/
 	
 	public boolean justDoIt(xpath nodes)
 	{
@@ -805,7 +875,10 @@ public class XPathEngine {
 	}
 	
 	
-	
+	/*
+	 * This is the inner class which forms a linked list sort of structure for the complete 
+	 * xpath provided. It helps in recursion and also in clear understanding of the process.
+	 */
 	
 	
 	class xpath
@@ -815,6 +888,11 @@ public class XPathEngine {
 		xpath link;
 	}
 	
+	/*
+	 * This function splits the XPath and saves it in the list of classes "xpath" so that the user can simply traverse the document and frae all the 
+	 * objects by populating element names and attributes.
+	 * 
+	 */
 	public xpath visualizeXPath(String path) 
 	{
 		
@@ -936,71 +1014,3 @@ public class XPathEngine {
 	}
 }
 
-
-////////////////////////
-/////////////////////////
-/////////////////////////
-////////////////////////
-
-
-
-/*
-while(xpath!=null)
-{
-	System.out.println("XPATH VALIDATION: "+xpath);
-	String node="";
-	
-	for(int z=0;z<xpath.length();z++)
-	{
-		if(xpath.charAt(z)!='/' && xpath.charAt(z)!='[')
-		{
-		node=node.concat(String.valueOf(xpath.charAt(z)));
-		}
-		else if(xpath.charAt(z)=='[')
-		{
-			if(node.charAt(0)>=48 && node.charAt(0)<=57 && node.charAt(0)==';' && node.charAt(0)==',' && node.charAt(0)=='.' && node.charAt(0)==':' && node.charAt(0)=='|' && node.charAt(0)=='<' && node.charAt(0)=='>' && node.charAt(0)=='?' && node.charAt(0)=='/' && node.charAt(0)=='\\' && node.charAt(0)=='~' && node.charAt(0)=='+' && node.charAt(0)=='-' && node.charAt(0)==';' && node.charAt(0)=='"' && node.charAt(0)=='\'')
-			{
-				
-				return false;
-			}
-			else if((node.length()>=3) && node.substring(0, 3).equalsIgnoreCase("xml"))
-			{
-				
-				return false;
-			}
-			
-			
-			
-			
-			
-		}
-		else if(xpath.charAt(z)=='/')
-		{
-			if(node.charAt(0)>=48 && node.charAt(0)<=57 && node.charAt(0)==';' && node.charAt(0)==',' && node.charAt(0)=='.' && node.charAt(0)==':' && node.charAt(0)=='|' && node.charAt(0)=='<' && node.charAt(0)=='>' && node.charAt(0)=='?' && node.charAt(0)=='/' && node.charAt(0)=='\\' && node.charAt(0)=='~' && node.charAt(0)=='+' && node.charAt(0)=='-' && node.charAt(0)==';' && node.charAt(0)=='"' && node.charAt(0)=='\'')
-			{
-				
-				return false;
-			}
-			else if((node.length()>=3) && node.substring(0, 3).equalsIgnoreCase("xml"))
-			{
-				
-				return false;
-			}
-			if(z!=xpath.length())
-			{
-			String temps=xpath.substring(z);
-			xpath="";
-			xpath=temps;
-			break;
-			}
-			else
-			{
-				xpath=null;
-				break;
-			}
-			
-		}
-	}
-	
-}
-*/

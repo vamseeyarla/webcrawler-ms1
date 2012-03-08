@@ -8,12 +8,8 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
 		//$JUnit-BEGIN$
-		suite.addTestSuite(ServletTest.class);
-		suite.addTestSuite(RequestTest.class);
-		suite.addTestSuite(ResponseTest.class);
-		suite.addTestSuite(ConfigTest.class);
-		suite.addTestSuite(ContextTest.class);
-		suite.addTestSuite(SessionTest.class);
+		suite.addTestSuite(XPathEngineTest.class);
+		suite.addTestSuite(HttpClientTest.class);
 		
 		//$JUnit-END$
 		return suite;

@@ -85,7 +85,7 @@ public class XPathServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		
-		System.out.println("XPATH is:   "+request.getParameterValues("xpath"));
+		//System.out.println("XPATH is:   "+request.getParameterValues("xpath"));
 		int reqNum=0;
 		
 		for(int count=0;count<request.getParameterValues("xpath").length;count++)
@@ -113,10 +113,10 @@ public class XPathServlet extends HttpServlet{
 		
 		for(int i=0;i<engine.xpathIsCorrect.length;i++)
 		{
-			System.out.println((i+1)+":   "+String.valueOf(engine.xpathIsCorrect[i]).toUpperCase());
+			//System.out.println((i+1)+":   "+String.valueOf(engine.xpathIsCorrect[i]).toUpperCase());
 		}
 		
-		System.out.println("URL:  "+request.getParameterValues("url"));
+		//System.out.println("URL:  "+request.getParameterValues("url"));
 		
 		HttpClient client=new HttpClient(request.getParameterValues("url")[0]);
 		
@@ -158,7 +158,7 @@ public class XPathServlet extends HttpServlet{
 			
 			
 			
-		System.out.println("LENGTH INPUT: "+outStream.size());
+		//System.out.println("LENGTH INPUT: "+outStream.size());
 
 		Document root=engine.createDOM(outStream,client);
 		

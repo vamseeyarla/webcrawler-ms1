@@ -67,7 +67,7 @@ public class XPathEngine {
 	 */
 	public String removeWhiteSpaces(String xpath)
 	{
-		System.out.println("BEFORE XPATH:  "+xpath);
+		//System.out.println("BEFORE XPATH:  "+xpath);
 		String temp="";
 		
 		for(int i=0;i<xpath.length();i++)
@@ -94,7 +94,7 @@ public class XPathEngine {
 			}
 		}
 			
-		System.out.println("AFTER XPATH:   "+temp);
+		//System.out.println("AFTER XPATH:   "+temp);
 		return temp;
 	}
 	
@@ -109,7 +109,7 @@ public class XPathEngine {
 	 */
 	public Document createDOM(ByteArrayOutputStream outStream, HttpClient client)
 	{
-	System.out.println(client.ConType);
+	//System.out.println(client.ConType);
 	
 		if(client.ConType==null)
 		{
@@ -213,15 +213,15 @@ public class XPathEngine {
 				 */
 				while(links.link!=null)
 				{
-				System.out.print(links.nodeName+":::");
-				System.out.println(links.attributes);
+				//System.out.print(links.nodeName+":::");
+				//System.out.println(links.attributes);
 					links=links.link;
 				}
-			    System.out.print(links.nodeName+":::");
-				System.out.println(links.attributes);
+			    //System.out.print(links.nodeName+":::");
+				//System.out.println(links.attributes);
 			
 				statuses[i]=isMatch(root.cloneNode(true),xpathExp[i]);
-				System.out.println("STATUS:  "+statuses[i]);
+				//System.out.println("STATUS:  "+statuses[i]);
 			}
 		}
 		
@@ -240,13 +240,13 @@ public class XPathEngine {
 	
 	public boolean isMatch(Node root, xpath node)
 	{
-		System.out.println("ROOT:  "+root.getNodeName());
-		System.out.println("NODE:  "+node.nodeName);
-		System.out.println("LENGTH:  "+root.getChildNodes().getLength());
+		//System.out.println("ROOT:  "+root.getNodeName());
+		//System.out.println("NODE:  "+node.nodeName);
+		//System.out.println("LENGTH:  "+root.getChildNodes().getLength());
 		int i=0;
 		for(i=0;i<root.getChildNodes().getLength();i++)
 		{
-			System.out.println("ELEMENT:  "+root.getChildNodes().item(i).getNodeName()+"  at: "+i);
+			//System.out.println("ELEMENT:  "+root.getChildNodes().item(i).getNodeName()+"  at: "+i);
 			if(root.getChildNodes().item(i).getNodeName().equalsIgnoreCase(node.nodeName))
 			{
 				if(node.attributes!=null)
@@ -302,7 +302,7 @@ public class XPathEngine {
 	    boolean firstOrNot=true;
 		while((match=attribute.indexOf("]",cursorPos))!=-1)
 		{
-			System.out.println("ATTRIBUTE SPLIT:  "+attribute.substring(position,match+1));
+			//System.out.println("ATTRIBUTE SPLIT:  "+attribute.substring(position,match+1));
 			int counter=0;
 			for(int i=0;i<attribute.substring(position,match+1).length();i++)
 			{
@@ -331,7 +331,7 @@ public class XPathEngine {
 		int beg=0;
 		for(int i=0;i<attributes.size();i++)
 		{
-			System.out.println("ARRAYLIST ELEM:  "+attributes.get(i));
+			//System.out.println("ARRAYLIST ELEM:  "+attributes.get(i));
 			String tempAtt=attributes.get(i);
 			tempAtt=tempAtt.substring(1);
 			tempAtt=tempAtt.substring(0,tempAtt.length()-1);
@@ -339,7 +339,7 @@ public class XPathEngine {
 			if(tempAtt.length()>6 && tempAtt.substring(0,6).equalsIgnoreCase("text()"))
 			{
 				boolean internal=false;
-				System.out.println("ENTERED text()");
+				//System.out.println("ENTERED text()");
 				
 				String []pairs=tempAtt.split("=");
 				pairs[0]=pairs[0].trim();
@@ -349,10 +349,10 @@ public class XPathEngine {
 				
 				for(int z=0;z<root.getChildNodes().getLength();z++)
 				{
-					System.out.println("TEXT() ELEMS:  "+root.getChildNodes().item(z).getNodeName());
+					//System.out.println("TEXT() ELEMS:  "+root.getChildNodes().item(z).getNodeName());
 					if(root.getChildNodes().item(z).getNodeName().equalsIgnoreCase("#text"))
 					{
-						System.out.println("TEXT() VALUE:  "+root.getChildNodes().item(z).getNodeValue().trim());
+						//System.out.println("TEXT() VALUE:  "+root.getChildNodes().item(z).getNodeValue().trim());
 						if(root.getChildNodes().item(z).getNodeValue().trim().equalsIgnoreCase(pairs[1]))
 						{
 						internal=true;
@@ -370,7 +370,7 @@ public class XPathEngine {
 				result=internal && result;
 				beg++;
 				}
-				System.out.println("RESULT:  "+internal);
+				//System.out.println("RESULT:  "+internal);
 				continue;
 			}
 			else if(tempAtt.length()>1 && tempAtt.substring(0,1).equalsIgnoreCase("@"))
@@ -379,7 +379,7 @@ public class XPathEngine {
 				 * Attribute Handling
 				 */
 				boolean internal=false;
-				System.out.println("ENTERED @ATT()");
+				//System.out.println("ENTERED @ATT()");
 			
 				String []pairs=tempAtt.split("=");
 				pairs[0]=pairs[0].trim();
@@ -390,10 +390,10 @@ public class XPathEngine {
 				
 				for(int z=0;z<root.getAttributes().getLength();z++)
 				{
-					System.out.println("@ATT() ELEMS:  "+root.getAttributes().item(z).getNodeName());
+					//System.out.println("@ATT() ELEMS:  "+root.getAttributes().item(z).getNodeName());
 					if(root.getAttributes().item(z).getNodeName().equalsIgnoreCase(pairs[0]))
 					{
-						System.out.println("@ATT() VALUE:  "+root.getAttributes().item(z).getNodeValue().trim());
+						//System.out.println("@ATT() VALUE:  "+root.getAttributes().item(z).getNodeValue().trim());
 						if(root.getAttributes().item(z).getNodeValue().trim().equalsIgnoreCase(pairs[1]))
 						{
 						internal=true;
@@ -411,7 +411,7 @@ public class XPathEngine {
 				result=internal && result;
 				beg++;
 				}
-				System.out.println("RESULT:  "+internal);
+				//System.out.println("RESULT:  "+internal);
 				continue;
 				
 			}
@@ -423,7 +423,7 @@ public class XPathEngine {
 				 * Contains Handling
 				 */
 				boolean internal=false;
-				System.out.println("ENTERED CONTAINS()");
+				//System.out.println("ENTERED CONTAINS()");
 				//; For text() data
 				String[] temp=tempAtt.split("contains");
 				temp[1]=temp[1].trim();
@@ -438,10 +438,10 @@ public class XPathEngine {
 				
 				for(int z=0;z<root.getChildNodes().getLength();z++)
 				{
-					System.out.println("CONTAINS() ELEMS:  "+root.getChildNodes().item(z).getNodeName());
+					//System.out.println("CONTAINS() ELEMS:  "+root.getChildNodes().item(z).getNodeName());
 					if(root.getChildNodes().item(z).getNodeName().equalsIgnoreCase("#text"))
 					{
-						System.out.println("CONTAINS() VALUE:  "+root.getChildNodes().item(z).getNodeValue().trim());
+						//System.out.println("CONTAINS() VALUE:  "+root.getChildNodes().item(z).getNodeValue().trim());
 						if(root.getChildNodes().item(z).getNodeValue().trim().indexOf(pairs[1])!=-1)
 						{
 						internal=true;
@@ -459,13 +459,13 @@ public class XPathEngine {
 				result=internal && result;
 				beg++;
 				}
-				System.out.println("RESULT:  "+internal);
+				//System.out.println("RESULT:  "+internal);
 				continue;
 				
 			}
 			else
 			{
-				System.out.println("ENTERED ELEMENT PARSING!");
+				//System.out.println("ENTERED ELEMENT PARSING!");
 				boolean internal=false;
 			xpath temp=visualizeXPath(" "+tempAtt);
 			internal= isMatch(root, temp);
@@ -480,7 +480,7 @@ public class XPathEngine {
 			result=internal && result;
 			beg++;
 			}
-			System.out.println("RESULT:  "+internal);
+			//System.out.println("RESULT:  "+internal);
 			continue;
 			
 			
@@ -488,7 +488,7 @@ public class XPathEngine {
 			
 		}
 		
-		System.out.println("ULTI RESULT:"+result);
+		//System.out.println("ULTI RESULT:"+result);
 		return result;
 	}
 	
@@ -508,7 +508,7 @@ public class XPathEngine {
 			
 			if(xpaths[i-1].charAt(0)!='/' || xpaths[i-1].indexOf("//")!=-1 || xpaths[i-1].indexOf("[[")!=-1 || xpaths[i-1].indexOf("::")!=-1|| xpaths[i-1].indexOf("==")!=-1 || xpaths[i-1].indexOf("@@")!=-1 || xpaths[i-1].indexOf("((")!=-1 || xpaths[i-1].indexOf("/[")!=-1 )
 			{
-			//	System.out.println("XPath Verfication Failed!");
+			//	//System.out.println("XPath Verfication Failed!");
 				xpathIsCorrect[i-1]=false;
 				return false;
 			}
@@ -638,7 +638,7 @@ public class XPathEngine {
 			    boolean firstOrNot=true;
 				while((match=attribute.indexOf("]",cursorPos))!=-1)
 				{
-					System.out.println("ATTRIBUTE SPLIT:  "+attribute.substring(position,match+1));
+					//System.out.println("ATTRIBUTE SPLIT:  "+attribute.substring(position,match+1));
 					int counter=0;
 					for(int i=0;i<attribute.substring(position,match+1).length();i++)
 					{
@@ -667,7 +667,7 @@ public class XPathEngine {
 				int beg=0;
 				for(int i=0;i<attributes.size();i++)
 				{
-					System.out.println("ARRAYLIST ELEM:  "+attributes.get(i));
+					//System.out.println("ARRAYLIST ELEM:  "+attributes.get(i));
 					String tempAtt=attributes.get(i);
 					tempAtt=tempAtt.trim();
 					tempAtt=tempAtt.substring(1).trim();
@@ -676,7 +676,7 @@ public class XPathEngine {
 					if(tempAtt.length()>6 && tempAtt.substring(0,6).equalsIgnoreCase("text()"))
 					{
 						boolean internal=true;
-						System.out.println("ENTERED text()");
+						//System.out.println("ENTERED text()");
 						//; For text() data
 						if(tempAtt.indexOf("=")==-1 || tempAtt.indexOf("\"")==-1)
 						{
@@ -709,7 +709,7 @@ public class XPathEngine {
 						result=internal && result;
 						beg++;
 						}
-						System.out.println("RESULT:  "+internal);
+						//System.out.println("RESULT:  "+internal);
 						continue;
 					}
 					else if(tempAtt.length()>1 && tempAtt.substring(0,1).equalsIgnoreCase("@"))
@@ -718,7 +718,7 @@ public class XPathEngine {
 						 * Attribute Handling
 						 */
 						boolean internal=true;
-						System.out.println("ENTERED @ATT()");
+						//System.out.println("ENTERED @ATT()");
 						//; For text() data
 						if(tempAtt.indexOf("=")==-1 || tempAtt.indexOf("\"")==-1)
 						{
@@ -780,7 +780,7 @@ public class XPathEngine {
 						result=internal && result;
 						beg++;
 						}
-						System.out.println("RESULT:  "+internal);
+						//System.out.println("RESULT:  "+internal);
 						continue;
 						
 					}
@@ -792,7 +792,7 @@ public class XPathEngine {
 						 * Contains Handling
 						 */
 						boolean internal=true;
-						System.out.println("ENTERED CONTAINS()");
+						//System.out.println("ENTERED CONTAINS()");
 						// ; For text() data
 						String[] temp=tempAtt.split("contains");
 						
@@ -832,13 +832,13 @@ public class XPathEngine {
 						result=internal && result;
 						beg++;
 						}
-						System.out.println("RESULT:  "+internal);
+						//System.out.println("RESULT:  "+internal);
 						continue;
 						
 					}
 					else
 					{
-						System.out.println("ENTERED ELEMENT PARSING!");
+						//System.out.println("ENTERED ELEMENT PARSING!");
 						boolean internal=true;
 					
 					internal= checker(" "+tempAtt);
@@ -853,7 +853,7 @@ public class XPathEngine {
 					result=internal && result;
 					beg++;
 					}
-					System.out.println("RESULT:  "+internal);
+					//System.out.println("RESULT:  "+internal);
 					continue;
 					
 					
@@ -861,7 +861,7 @@ public class XPathEngine {
 					
 				}
 				
-				System.out.println("ULTI RESULT:"+result);
+				//System.out.println("ULTI RESULT:"+result);
 				return result;
 				
 						

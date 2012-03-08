@@ -113,7 +113,7 @@ public ByteArrayOutputStream fetchData()
 				String firstHead=br.readLine();
 				if(firstHead.indexOf("404")!=-1 || firstHead.indexOf("500")!=-1)
 				{
-					System.out.println("SERVER ERROR AT REMOTE LOCATION");
+					////System.out.println("SERVER ERROR AT REMOTE LOCATION");
 					outBytes=new ByteArrayOutputStream();
 					outBytes.write("404".getBytes());
 					return outBytes;
@@ -124,8 +124,8 @@ public ByteArrayOutputStream fetchData()
 					String contentType=null;
 					
 					while((contentType=br.readLine()).indexOf("Content-Type:")==-1);
-					System.out.println("ENTERED CONTENT-TYPE");
-					System.out.println(URL+"     "+contentType);
+					////System.out.println("ENTERED CONTENT-TYPE");
+					////System.out.println(URL+"     "+contentType);
 					String type=contentType.substring(contentType.indexOf(":")+1,contentType.length()).trim();
 					if(type.indexOf("xml")!=-1 || type.indexOf("XML")!=-1)
 					{
@@ -195,7 +195,7 @@ public ByteArrayOutputStream fetchData()
 		}
 		catch(Exception e)
 		{
-			System.out.println("Error in reading file");
+			//System.out.println("Error in reading file");
 			e.printStackTrace();
 			outBytes=new ByteArrayOutputStream();
 			try {

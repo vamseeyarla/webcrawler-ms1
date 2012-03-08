@@ -22,6 +22,17 @@ import org.w3c.tidy.Tidy;
  */
 public class XPathServlet extends HttpServlet{
 
+	/*
+	 * (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 	
+	 	This function is the first one to be called when the server is activated with 
+	 	the XPath Servlet. It just returns the fields necessary for html viewing.
+		It also takes all the XPath inputs and URL from where the file has to be fetched 
+		and calls the POST sequence of the same servlet for execution.
+
+	 *
+	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		
@@ -48,11 +59,29 @@ public class XPathServlet extends HttpServlet{
 		out.println("</tr></table>");
 		out.println("</br></br>");
 		out.println("*** The URL can be File System Address or any Remote Address; All Remote Addresses are supposed to start with http://");
-		
+		out.println("</br></br>");
+		out.println("Created By:-");
+		out.println("</br>");
+		out.println("Vamsee K Yarlagadda");
+		out.println("</br>");
+		out.println("PennKey: vamsee>");
 		out.println("</form>");
 		out.println("</BODY>");
 		out.println("</HTML>");
 }
+	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 
+	 *This function is called whenever the post method is checked in the form. 
+	 *It takes the inputs from the user and calls appropriate functions for XPATH 
+	 *Validation and also creating the DOM representations and calling the evaluate 
+	 *function to verify whether the XPaths conform to the file provided as the URL.
+	 *
+	 */
+	
+	
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		

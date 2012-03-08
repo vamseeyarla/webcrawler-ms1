@@ -21,7 +21,7 @@ import java.net.Socket;
 public class HttpClient {
 	String URL;
 	ByteArrayOutputStream outBytes;
-	String ConType=null;
+	public String ConType=null;
 public HttpClient(String url)
 {
 	URL=url;
@@ -79,8 +79,10 @@ public ByteArrayOutputStream fetchData()
 				OutputStream out=(socket.getOutputStream());
 				out.write(("GET "+request+" HTTP/1.0\n").getBytes());
 				out.write(("Host: "+address+"\n").getBytes());
-				out.write(("Accept: text/html\n").getBytes());
+				out.write(("Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\n").getBytes());
+				out.write(("Accept-Encoding: gzip, deflate\n").getBytes());
 				out.write(("Accept-Language: en-us\n\n").getBytes());
+				
 				
 				
 				
@@ -102,7 +104,9 @@ public ByteArrayOutputStream fetchData()
 					//String contentLength=null;
 					String contentType=null;
 					
-					while((contentType=br.readLine()).indexOf("Content-Type")==-1);
+					while((contentType=br.readLine()).indexOf("Content-Type:")==-1);
+					System.out.println("ENTERED CONTENT-TYPE");
+					System.out.println(URL+"     "+contentType);
 					String type=contentType.substring(contentType.indexOf(":")+1,contentType.length()).trim();
 					if(type.indexOf("xml")!=-1 || type.indexOf("XML")!=-1)
 					{

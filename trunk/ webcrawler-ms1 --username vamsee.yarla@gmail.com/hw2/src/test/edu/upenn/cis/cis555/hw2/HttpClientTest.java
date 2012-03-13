@@ -6,7 +6,6 @@ package test.edu.upenn.cis.cis555.hw2;
 import java.io.ByteArrayOutputStream;
 
 import edu.upenn.cis.cis555.HttpClient;
-import edu.upenn.cis.cis555.XPathEngine;
 import junit.framework.TestCase;
 
 /**
